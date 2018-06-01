@@ -3,15 +3,16 @@
 A django app that replaces the django admin authentication mechanism by
 deferring to an oauth2 provider.
 
-[![Build Status](https://travis-ci.org/RealGeeks/django-admin-oauth2.png?branch=master)](https://travis-ci.org/RealGeeks/django-admin-oauth2)
+Forked from https://travis-ci.org/RealGeeks/django-admin-oauth2
 
 # Support
 
-django-admin-oauth2 should support Python 2.7, pypy, and Django versions 1.6 through 1.10
+django-admin-oauth2, updated for Django 2.0 running on Python 3.6. We use this to interface with Identity Server 3, 
+so YMMV on other products. 
 
 ## Installation
 
-Step 1: `pip install django-admin-oauth2` and include it in your project's requirements
+Step 1: `pip install git+https://github.com/jherskovic/django-admin-oauth2.git` and include it in your project's requirements
 
 Step 2:  Include the django-admin-oauth2 urlconf in your project's urls.py:
 
@@ -53,7 +54,7 @@ Step 6: Set up all the correct options (see below for available options)
 
  * OAUTHADMIN_GET_USER: This is function that is given the oauth token and returns
    a django.auth.models.User model corresponding to the currently logged-in user.
-   You can set permissions on this user object and stuff.
+   You can set permissions on this user object and stuff. If you don't set this, a default stub will be used as below.
  * OAUTHADMIN_CLIENT_ID: Your oAuth client ID
  * OAUTHADMIN_CLIENT_SECRET: oAuth client secret
  * OAUTHADMIN_BASE_URL: The landing point for all oAuth related queries.
@@ -61,8 +62,24 @@ Step 6: Set up all the correct options (see below for available options)
  * OAUTHADMIN_TOKEN_URL: oAuth bearer token provider URL
  * OAUTHADMIN_PING_INTERVAL (optional, defaults to 300): Minimum number of seconds between ping requests
  * OAUTHADMIN_PING: (optional, defaults to None) This optional function takes an oauth token and returns True if it's still valid and False if it's no longer valid (if they have logged out of the oauth server)
- * OAUTHADMIN_DEFAULT_NEXT_URL: (optional, defaults to /admin). This optional value is the default page that a successful oauth login process will land you on.
+ * OAUTHADMIN_DEFAULT_NEXT_URL: (optional, defaults to `/admin`). This optional value is the default page that a successful oauth login process will land you on.
+ * OAUTHADMIN_FIRST_AUTH_PARAMETERS: (optional, defaults to empty). A dictionary of parameters that you want to send to the server on login. We use this to control the behavior of IdentityServer3.
 
+## Settings for the OAuth2 <--> Django user mapping
+(Most of these defaults are sensible for our installation of IdentityServer3)
+
+ * OAUTHADMIN_SCOPE: A list of the scopes you want to ask for (our server doesn't support 'default'). A good set could be 
+ `['openid', 'profile', 'roles', 'email']`
+ * OAUTHADMIN_USERINFO: The endpoint for getting information about your user in the OAuth server.
+ * OAUTHADMIN_USER_PK_ATTRIBUTE: Which attribute from `userinfo` to use as a username (i.e. the User primary key). Defaults to `email`.
+ * OAUTHADMIN_USER_EMAIL_ATTRIBUTE: Which attribute to map to `email` in the `User` object. Also unsuprisingly, defaults to `email`.
+ * OAUTHADMIN_FIRST_NAME_ATTRIBUTE: Which attribute to map to the user's first name. Defaults to `given_name`
+ * OAUTHADMIN_LAST_NAME_ATTRIBUTE": Which attribute to map to the user's last name. Defaults to `family_name`
+ * OAUTHADMIN_USER_ROLES_ATTRIBUTE: Which attribute contains the user's known roles. Defaults to `role`.
+ * OAUTHADMIN_ADMIN_ROLE_NAME: If this role is returned in the `userinfo['role']` structure, the Django user will be marked as a superuser. Defaults to `Django Administrator`. 
+
+
+ 
 ## Testing
 
 If you want to test this app, install the requirements needed for testing:
@@ -84,6 +101,8 @@ When the CSRF validation token doesn't match, django-admin-oauth2 will redirect 
 
 
 ## Changelog
+ * 1.2.0: Fix a bug in the handling of OAUTHADMIN_DEFAULT_NEXT_URL. Add a useful stub for mapping logins to User objects using an OAuth info endpoint.
+ * Fork (JRH) 
  * 1.1.2: Add support for django 2
  * 1.1.1: Fix a bug where the new setting wasn't getting read
  * 1.1.0: Add new setting: OAUTHADMIN_DEFAULT_NEXT_URL

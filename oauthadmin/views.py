@@ -57,7 +57,8 @@ def login(request):
         scope=app_setting('SCOPE'),
         state=state,
     )
-    authorization_url, state = oauth.authorization_url(app_setting('AUTH_URL'))
+
+    authorization_url, state = oauth.authorization_url(app_setting('AUTH_URL'), **app_setting('FIRST_AUTH_PARAMETERS'))
 
     request.session['oauth_state'] = state
 
