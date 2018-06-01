@@ -5,7 +5,7 @@ defaults = {
     "GET_USER": 'oauthadmin.stubs.get_user',
     "PING_INTERVAL": 300,
     "DEFAULT_NEXT_URL": "/admin/",
-    "SCOPE": ["default"],
+    "SCOPE": ["email"],
 }
 
 global_prefix = 'OAUTHADMIN_'
