@@ -74,7 +74,7 @@ Step 6: Set up all the correct options (see below for available options)
  * OAUTHADMIN_USER_PK_ATTRIBUTE: Which attribute from `userinfo` to use as a username (i.e. the User primary key). Defaults to `email`.
  * OAUTHADMIN_USER_EMAIL_ATTRIBUTE: Which attribute to map to `email` in the `User` object. Also unsuprisingly, defaults to `email`.
  * OAUTHADMIN_FIRST_NAME_ATTRIBUTE: Which attribute to map to the user's first name. Defaults to `given_name`
- * OAUTHADMIN_LAST_NAME_ATTRIBUTE": Which attribute to map to the user's last name. Defaults to `family_name`
+ * OAUTHADMIN_LAST_NAME_ATTRIBUTE: Which attribute to map to the user's last name. Defaults to `family_name`
  * OAUTHADMIN_USER_ROLES_ATTRIBUTE: Which attribute contains the user's known roles. Defaults to `role`.
  * OAUTHADMIN_ADMIN_ROLE_NAME: If this role is returned in the `userinfo['role']` structure, the Django user will be marked as a superuser. Defaults to `Django Administrator`. 
 
