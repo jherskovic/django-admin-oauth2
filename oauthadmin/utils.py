@@ -2,7 +2,6 @@ from django.core.exceptions import ImproperlyConfigured
 from importlib import import_module
 from requests_oauthlib import OAuth2Session
 from oauthadmin.settings import app_setting
-import pprint
 
 # Note: This is a copy-paste from django 1.6 for backwards-compat reasons
 
@@ -38,7 +37,6 @@ def default_get_user(token):
     # This import needs to be deferred
     from django.contrib.auth.models import User
     ui = userinfo(token)
-    pprint.pprint(ui)
 
     pk = ui[app_setting('USER_PK_ATTRIBUTE')]
     roles = ui[app_setting('USER_ROLES_ATTRIBUTE')]
